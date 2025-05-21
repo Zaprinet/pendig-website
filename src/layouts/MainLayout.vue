@@ -1,43 +1,46 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="tw-bg-white tw-text-black tw-px-7 tw-py-2" height-hint="98">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="row tw-justify-between">
+          <div
+            class="row tw-min-w-[10%] tw-justify-between tw-cursor-pointer"
+            @click="router.push('/')"
+          >
+            <q-avatar class="tw-my-auto tw-me-2">
+              <img src="/My_Digital_Marketing_Logo__1_-removebg-preview 1.svg" />
+            </q-avatar>
+            <div>
+              <p class="tw-my-0 tw-font-bold tw-text-[#008080] tw-text-[27px]">
+                PEN<span class="tw-text-[#ff7f50ee] -tw-ms-[6px]">Dig</span>
+              </p>
+              <p class="tw-mb-0 -tw-mt-4 tw-font-bold tw-text-[18px]">Marketing</p>
+            </div>
+          </div>
+          <div class="row tw-justify-between tw-my-auto tw-min-w-[40%]">
+            <q-btn
+              v-for="(link, index) in links"
+              :key="index"
+              flat
+              :label="link.name"
+              no-caps
+              :class="isActive === link.name ? 'tw-text-[#FF7F50]' : 'hover:tw-underline'"
+              @click="checkState(link)"
+            />
+          </div>
+          <div class="row tw-my-auto">
+            <q-btn
+              color="primary"
+              label="Join Our Email List"
+              class="tw-rounded-[10px] tw-px-10 tw-max-h-[10px] hover:tw-underline"
+              no-caps
+              @click="onClick"
+            />
+            <q-icon name="search" class="tw-m-1" color="primary" />
+          </div>
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -47,56 +50,42 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { useRouter } from 'vue-router'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+const isActive = ref('HOME')
+const router = useRouter()
 
-const leftDrawerOpen = ref(false)
+const links = ref([
+  {
+    name: 'HOME',
+    path: '/',
+  },
+  {
+    name: 'ABOUT US',
+    path: 'about-us',
+  },
+  {
+    name: 'OUR SERVICES',
+    path: '',
+  },
+  {
+    name: 'RESOURCES',
+    path: '',
+  },
+  {
+    name: 'BLOG',
+    path: '',
+  },
+  {
+    name: 'CONTACT US',
+    path: '',
+  },
+])
 
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+const checkState = (link) => {
+  router.push(link.path)
+  isActive.value = link.name
 }
 </script>
+
+<style scoped></style>
